@@ -2,6 +2,8 @@
 <%@page import="it.prova.gestionecomputerjspservletmaven.model.Computer"%>
 <%@page import="java.util.List"%>
 <%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!doctype html>
 <html lang="it" class="h-100" >
 	 <head>
@@ -61,21 +63,23 @@
 				                    </tr>
 				                </thead>
 				                <tbody>
-				                	<% List<Computer> listaComputer= (List<Computer>)request.getAttribute("listaComputerAttribute");
-				                		for(Computer item:listaComputer){ %>
-				                    <tr >
-				                        <td><%=item.getId() %></td>
-				                        <td><%=item.getMarca() %></td>
-				                        <td><%=item.getModello() %></td>
-				                        <td><%=item.getPrezzo() %></td>
-				                        <td><%=item.getDataRilascio()!=null? new SimpleDateFormat("dd/MM/yyyy").format(item.getDataRilascio()):"N.D."%></td>
+				                	
+				                	<c:forEach var="item" items="${listaComputerAttribute}">
+				                	<tr>
+				                        <td>${item.id}</td>
+				                        <td>${item.marca}</td>
+				                        <td>${item.modello}</td>
+				                        <td>${item.prezzo}</td>
+				                        <fmt:formatDate value="${item.dataRilascio}" pattern="dd/MM/yyyy" var="dataRilascio"/>
+				                        <td>${dataRilascio}</td>
 				                        <td>
-											<a class="btn  btn-sm btn-outline-secondary" href="ExecuteVisualizzaComputerServlet?idComputer=<%=item.getId() %>">Visualizza</a>
-											<a class="btn  btn-sm btn-outline-primary ml-2 mr-2" href="PrepareModificaComputerServlet?idComputer=<%=item.getId() %>">Edit</a>
-											<a class="btn btn-outline-danger btn-sm" href="PrepareRimuoviComputerServlet?idComputer=<%=item.getId() %>">Delete</a>
+											<a class="btn  btn-sm btn-outline-secondary" href="ExecuteVisualizzaComputerServlet?idComputer=${item.id}">Visualizza</a>
+											<a class="btn  btn-sm btn-outline-primary ml-2 mr-2" href="PrepareModificaComputerServlet?idComputer=${item.id}">Edit</a>
+											<a class="btn btn-outline-danger btn-sm" href="PrepareRimuoviComputerServlet?idComputer=${item.id}">Delete</a>
 										</td>
 				                    </tr>
-				                    <% } %>
+                  					 </c:forEach>
+				                    
 				                    
 				                </tbody>
 				            </table>
